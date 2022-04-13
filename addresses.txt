@@ -1,0 +1,3 @@
+Social Blocks Smart Contract: 0x7698b5D7869bC1A5643C4E7261Dd621cE7E8D6fF (rinkeby testnet)
+Social Blocks Token Contract: 0xCfb6F890d0A605a3E0B767b0cE32fAD25Ec96DE8 (rinkeby testnet)
+admins address [0x7698b5D7869bC1A5643C4E7261Dd621cE7E8D6fF, 0x611485C1990cd77A7D67e46AA6D6e7F8359dF4ee]
