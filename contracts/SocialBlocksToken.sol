@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.11;
+pragma solidity 0.8.16;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 //create ERC20 token contract
 contract SocialBlocksToken is ERC20 {
@@ -13,7 +13,7 @@ contract SocialBlocksToken is ERC20 {
   }
 
   //CONSTRUCTOR
-  constructor() ERC20("Social Blocks Token", "SBT"){
+  constructor() ERC20("Social Blocks Token", "$SBT"){
     admins[msg.sender] = true;
   }
 

@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.11;
+pragma solidity 0.8.16;
 // import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 // import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
 import "./AccountCreation.sol";
@@ -33,10 +33,11 @@ contract SocialBlocks is AccountCreation("Social Blocks", "$SB"), Ownable, Verif
 
     IERC20 public rewardToken;
     // Stores max token id
-    uint256 maxTokenId = 1;
-    uint256 rewardFactor = 1000;
+    uint256 public maxTokenId = 1;
+    uint256 public rewardFactor = 1000;
     uint256 ONE = 1 ether;
     address public admin;
+    uint256 public _claimId = 0;
     // address lastBidder;
     
     //following this buyStatus
@@ -213,14 +214,14 @@ contract SocialBlocks is AccountCreation("Social Blocks", "$SB"), Ownable, Verif
     (
         uint256 _postId, 
         uint256 _likesCount,
-        bytes memory _signature, 
-        bytes32 signedMessageHash
+        bytes memory _signature 
     ) 
     external {
         //local copy for gas efficiency
         address user = msg.sender;
         require(_postId > 0 && idToOwner[_postId] == user, "Invalid postId");
-        require(verify(admin, _signature, signedMessageHash), "Invalid signature");
+        require(verify(admin, _signature, _likesCount, _claimId), "Invalid signature");
+        _claimId++;
         
         // total reward of the post minus rewardPaid = reward to be paid
         uint256 likes = _likesCount - idToLikes[_postId];
@@ -352,7 +353,7 @@ contract SocialBlocks is AccountCreation("Social Blocks", "$SB"), Ownable, Verif
 
     
 
-    function mint(uint8 _buyStatus, uint256 _sellValue, uint256 _bidDuration, string memory tokenURI_) external isValidUser {
+    function mint(uint8 _buyStatus, uint256 _sellValue, uint256 _bidDuration, string memory tokenURI_, string calldata metadata) external isValidUser {
         address user = msg.sender;
         bytes memory b = bytes(tokenURI_);
 
@@ -363,7 +364,7 @@ contract SocialBlocks is AccountCreation("Social Blocks", "$SB"), Ownable, Verif
 
         _safeMint(user, maxTokenId);
         _setTokenURI(maxTokenId, tokenURI_);
-        emit PostCreated(maxTokenId,user,tokenURI_, _buyStatus, _sellValue);
+        emit PostCreated(maxTokenId,user,tokenURI_, _buyStatus, _sellValue, metadata);
 
         idToOwner[maxTokenId] = user;
         postInfo[maxTokenId] = PostInfo(_buyStatus, _sellValue, _bidDuration, tokenURI_);

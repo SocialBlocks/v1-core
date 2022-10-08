@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity 0.8.11;
+pragma solidity 0.8.16;
 
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Enumerable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 
 contract AccountCreation is ERC721Enumerable {
      struct UserInfo {
@@ -24,7 +23,7 @@ contract AccountCreation is ERC721Enumerable {
 
     // event AccountCreated(string newName);
     // event BioChange(string bio);
-    event PostCreated(uint id, address sender, string uri, uint8 buyStatus, uint256 sellValue);
+    event PostCreated(uint id, address sender, string uri, uint8 buyStatus, uint256 sellValue, string metadata);
     event InfoChanged(string displayName, string bio, string image);
     event AccountCreated(address user, string userName, string displayName, string bio, string image);
     event PostDetailsChanged(uint256 postId, uint8 status,  uint256 price, uint256 bidDuration);
