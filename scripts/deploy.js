@@ -1,7 +1,11 @@
 // scripts/create-box.js
 const { ethers, upgrades } = require("hardhat");
+const {abi:socialBlocksTokenABI} = require("../artifacts/contracts/SocialBlocksToken.sol/SocialBlocksToken.json");
 
 async function main() {
+  try {
+    
+
   const provider = waffle.provider;
 
   const [owner] = await ethers.getSigners();
@@ -12,23 +16,34 @@ async function main() {
 
 
   // Social Blocks contracts deployment
-  // const SocialBlocksToken = await ethers.getContractFactory("SocialBlocksToken");
   const SocialBlocks = await ethers.getContractFactory("SocialBlocks");
+  // const SocialBlocksToken = await ethers.getContractFactory('SocialBlocksToken');
 
-  // console.log('deploying social blocks token');
-  // let socialBlocksToken = await SocialBlocksToken.deploy(); //0x512fE96aa3cC9265b94Dc3017BF0d805AF0800F2
+
+
+  let socialBlocksToken;
+  // console.log('deploying social blocks token...');
+  // socialBlocksToken = await SocialBlocksToken.deploy();
+  // await socialBlocksToken.deployed();
+  socialBlocksToken = await ethers.getContractAt(socialBlocksTokenABI, "0xa030a24efb9348632dd17ea11294805bed482d6c", owner); //aurora testnet
+  console.log(socialBlocksToken.address)
 
   console.log('deploying social blocks contract...');
   let SBT = "0x076c5102c870aa5ac9d1336947dfbd5d9fbb6991"  //mumbai
   let OWNER = "0x1ca510447b07dcf686339ea6e647dc8049cdff2f" 
-  let socialBlocks = await SocialBlocks.deploy(SBT, OWNER);
+  let socialBlocks = await SocialBlocks.deploy(socialBlocksToken.address ? socialBlocksToken.address : SBT, OWNER);
+  // // await socialBlocks.deployed();
   
+  // //make main contract owner of token contract for minitng and burning of SBT
+  await socialBlocksToken.connect(owner).addAdmin(socialBlocks.address);  
   console.log('all contracts deployed')
 
-  // console.log("socialBlocksToken: ", socialBlocksToken.address);
   console.log("socialBlocks: ", socialBlocks.address);
-  console.log("SBT: ", SBT);
+  console.log("SBT: ", socialBlocksToken ? socialBlocksToken.address : SBT);
   console.log("OWNER: ", OWNER);
+  } catch (error) {
+    console.log(error);
+  }
 }
 (async () => {
   try {

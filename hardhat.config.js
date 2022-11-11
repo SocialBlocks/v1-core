@@ -23,6 +23,8 @@ const chainIds = {
 	ropsten: 3,
 	bsctestnet: 97,
 	mumbai: 80001,
+	auroratestnet: 1313161555,
+	auroramainnet: 1313161554,
 };
 
 module.exports = {
@@ -63,6 +65,11 @@ module.exports = {
 			url: `https://polygon-mumbai.infura.io/v3/${INFURA_API_KEY}`,
 			gas: 2100000,
 			gasPrice: 32000000000, //32 gwei
+		},
+		auroratestnet: {
+			chainId: chainIds["auroratestnet"],
+			url: `https://aurora-testnet.infura.io/v3/${INFURA_API_KEY}`,
+			accounts: [PRIVATE_KEY],
 		},
 	},
 	etherscan: {
